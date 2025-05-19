@@ -15,7 +15,6 @@ OFILES=\
 	pcre2_maketables.$O\
 	pcre2_string_utils.$O\
 	pcre2_newline.$O\
-	pcre2_compile_cgroup.$O\
 	pcre2_compile_class.$O\
 	pcre2_chkdint.$O\
 	pcre2_valid_utf.$O\
@@ -26,6 +25,7 @@ OFILES=\
 	pcre2_tables.$O\
 	pcre2_ucd.$O\
 	pcre2_chartables.$O\
+# pcre2_compile_cgroup.$O\
 
 default:V: $O.pcre2grep
 
@@ -44,7 +44,7 @@ deps:
 	mkdir -p deps
 
 $PCRESRC: deps
-	test -d $PCRESRC || git/clone https://github.com/PCRE2Project/pcre2 $PCRESRC
+	./repo.rc
 
 $PCRESRC/%:Q: $PCRESRC
 	test -e $target
@@ -72,8 +72,11 @@ install-pcre2grep:V: install-pcre2grep-bin install-pcre2grep-man
 
 install:V: install-pcre2grep
 
-clean:V:
-	rm -rf [$OS].* *.[$OS] $CLEANFILES deps
+cclean:V:
+	rm -rf [$OS].* *.[$OS] $CLEANFILES
+
+clean:V: cclean
+	rm -rf deps
 
 uninstall:V:
 	rm -f /$objtype/bin/pcre2grep /sys/man/1/pcre2grep
