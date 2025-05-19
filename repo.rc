@@ -1,6 +1,6 @@
 #!/bin/rc
 
-rfork en
+rfork n
 builtin flag e +
 
 REMOTE=https://github.com/PCRE2Project/pcre2
@@ -17,7 +17,7 @@ builtin cd deps/pcre2
 test -f .git/refs/tags/pcre2-$VERSION || die 'tag not found'
 taghash=`{cat .git/refs/tags/pcre2-$VERSION}
 git/fs
-cat .git/fs/object/$taghash | awk '
+commithash=''`{<.git/fs/object/$taghash awk '
 	BEGIN{
 		commit=""
 	}
@@ -30,12 +30,11 @@ cat .git/fs/object/$taghash | awk '
 	END{
 		if(commit == ""){
 			print Invalid tag format
-			exit 1
+				exit 1
 		}
-		printf("%s", commit) > "/env/commithash"
-		close("/env/commithash")
+		printf("%s", commit)
 	}
-' || die 'Invalid tag format'
+'} || die 'Invalid tag format'
 if(~ ''`{cat .git/HEAD} $commithash) exit
 if({git/walk -fMARU | grep .})
 	die 'repo is dirty'
