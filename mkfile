@@ -73,7 +73,7 @@ install-pcre2grep:V: install-pcre2grep-bin install-pcre2grep-man
 install:V: install-pcre2grep
 
 clean:V:
-	rm -rf [$OS].* *.[$OS] $CLEANFILES
+	rm -rf [$OS].* *.[$OS] $CLEANFILES deps
 
 uninstall:V:
 	rm -f /$objtype/bin/pcre2grep /sys/man/1/pcre2grep
